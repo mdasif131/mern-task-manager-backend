@@ -51,6 +51,7 @@ export const loginUser = async (req, res) => {
           lastName: existingUser.lastName,
           mobile: existingUser.mobile,
           photo: existingUser.photo,
+          token: req.cookies.token,
         },
       });
     } else {
