@@ -1,6 +1,7 @@
 import asycHandler from '../middlewares/asyncHandler.js';
 import UserModel from '../models/userModel.js';
 import generateToken from '../utils/createToken.js';
+// generateToken(res, user._id, user.email);
 export const registration = async (req, res) => {
   try {
     const { email, firstName, lastName, mobile, password, photo } = req.body;
@@ -22,7 +23,7 @@ export const registration = async (req, res) => {
       password,
       photo,
     });
-    generateToken(res, user._id, user.email);
+    
     res.status(201).json({
       status: 'success',
       data: user,
