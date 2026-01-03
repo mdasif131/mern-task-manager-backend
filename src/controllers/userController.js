@@ -44,12 +44,14 @@ export const loginUser = async (req, res) => {
 
       res.status(200).json({
         status: 'success',
-        _id: existingUser._id,
-        email: existingUser.email,
-        firstName: existingUser.firstName,
-        lastName: existingUser.lastName,
-        mobile: existingUser.mobile,
-        photo: existingUser.photo,
+        data: {
+          _id: existingUser._id,
+          email: existingUser.email,
+          firstName: existingUser.firstName,
+          lastName: existingUser.lastName,
+          mobile: existingUser.mobile,
+          photo: existingUser.photo,
+        },
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
