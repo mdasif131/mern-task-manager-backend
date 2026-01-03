@@ -41,12 +41,13 @@ export const loginUser = async (req, res) => {
 
     if (existingUser) {
       generateToken(res, existingUser._id, existingUser.email);
-     const isPasswordCorrect = existingUser.password === password;
-     if (!isPasswordCorrect) {
-      return res.status(401).json({ message: 'Invalid email or password' });
-     }
+      const isPasswordCorrect = existingUser.password === password;
+      if (!isPasswordCorrect) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
       res.status(200).json({
         status: 'success',
+        token: req.cookies.token,
         data: {
           _id: existingUser._id,
           email: existingUser.email,
@@ -54,7 +55,6 @@ export const loginUser = async (req, res) => {
           lastName: existingUser.lastName,
           mobile: existingUser.mobile,
           photo: existingUser.photo,
-          token: req.cookies.token,
         },
       });
     } else {
