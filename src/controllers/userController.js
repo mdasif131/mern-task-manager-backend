@@ -1,7 +1,6 @@
 import asycHandler from '../middlewares/asyncHandler.js';
 import UserModel from '../models/userModel.js';
-import generateToken from '../utils/createToken.js'; 
-import jwt from 'jsonwebtoken';
+import generateToken from '../utils/createToken.js';
 export const registration = async (req, res) => {
   try {
     const { email, firstName, lastName, mobile, password, photo } = req.body;
@@ -42,9 +41,7 @@ export const loginUser = async (req, res) => {
 
     if (existingUser) {
      const token = generateToken(res, existingUser._id, existingUser.email); 
-      //  const token = jwt.sign({ userId, email }, process.env.JWT_SECRET, {
-      //     expiresIn: '30d',
-      //   });
+      
       const isPasswordCorrect = existingUser.password === password;
       if (!isPasswordCorrect) {
         return res.status(401).json({ message: 'Invalid email or password' });
