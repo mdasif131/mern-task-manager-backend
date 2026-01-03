@@ -5,6 +5,7 @@ export const authenticate = asycHandler(async (req, res, next) => {
   let token;
   //Read token from cookies
   token = req.cookies?.token || req.headers['token']
+  console.log("Auth Token:", token);
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
