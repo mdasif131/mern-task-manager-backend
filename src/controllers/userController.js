@@ -35,13 +35,16 @@ export const registration = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
 
     const existingUser = await UserModel.findOne({ email });
 
     if (existingUser) {
       generateToken(res, existingUser._id, existingUser.email);
-
+     const isPasswordCorrect = await existingUser.comparePassword(password);
+     if (!isPasswordCorrect) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+     }
       res.status(200).json({
         status: 'success',
         data: {
