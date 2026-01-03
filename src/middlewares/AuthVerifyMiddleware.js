@@ -4,7 +4,7 @@ import asycHandler from './asyncHandler.js';
 export const authenticate = asycHandler(async (req, res, next) => {
   let token;
   //Read token from cookies
-  token = req.cookies?.token || req.headers['token']
+  token = req.cookies?.token 
  
   if (token) {
     try {

@@ -47,7 +47,7 @@ export const loginUser = async (req, res) => {
       }
       res.status(200).json({
         status: 'success',
-        token: req.cookies.token || token,
+        token:  req.cookies.token || "",
         data: {
           _id: existingUser._id,
           email: existingUser.email,
