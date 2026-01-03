@@ -31,7 +31,10 @@ const URL = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/task_manager_app
 mongoose
   .connect(URL, { autoIndex: true })
   .then(() => console.log('✅ Database connected successfully'))
-  .catch(err => console.error('❌ DB Connection Error:', err));
+  .catch(err => {
+    console.error('❌ DB Connection Error:', err);
+    process.exit(1);
+  });
 
 // Routing Implementation
 app.use("/api/v1", router) 
