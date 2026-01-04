@@ -20,8 +20,8 @@ app.use(helmet());
 app.use(hpp());
 app.use(cors());
 app.use(cookieParser());
-app.use(express.json({ limit: '20mb' }));
-app.use(express.urlencoded({ limit: '20mb', extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // Request Limiter 
 const limiter = rateLimit({windowMs: 15 * 60 * 1000, max: 3000});
 app.use(limiter); 
