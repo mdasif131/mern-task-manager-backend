@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   loginUser,
+  profileDetails,
   registration,
   updateUserProfile,
 } from '../controllers/userController.js';
@@ -13,6 +14,7 @@ const router = express.Router();
 router.post('/register', registration);
 router.post('/login', loginUser);
 
+router.get('/profile-details', authenticate, profileDetails);
 router.put('/update', authenticate, updateUserProfile);
 
 // Task Route

@@ -65,7 +65,18 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
+export const profileDetails = asycHandler(async (req, res) => {
+  const email = req.user.email || req.body.email; 
+  try {
+    const userDetails = await UserModel.aggregate([
+      { $match: { email: email } },
+      { $project: { _id: 1, email: 1, firstName: 1, lastName: 1, mobile:1, photo:1, password:1}}
+    ])
+    return res.status(200).json({status: 'success', data: userDetails[0]});
+  } catch (error) {
+    res.status(400).json({status:'fail', data: error.message});
+  }
+})
 export const updateUserProfile = asycHandler(async (req, res) => {
   let user = await UserModel.findById(req.user._id);
 
