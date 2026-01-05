@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export const sendEmailUtility = async (EmailTo, EmailText, EmailSubject) => {
+export const sendEmailUtility = async (EmailTo, EmailText, EmailSubject, EmailHTML) => {
   let transport = nodemailer.createTransport({
     // service: 'gmail',
     // host: 'mail.teamrabbil.com',
@@ -21,7 +21,7 @@ export const sendEmailUtility = async (EmailTo, EmailText, EmailSubject) => {
     to: EmailTo,
     subject: EmailSubject,
     text: EmailText,
-    // html: `<b>Node mailer powered by MD ASIF</b>`,
+    html: EmailHTML || `<p>${EmailText}</p>`,
   };
   return await transport.sendMail(mailOptions);
 }

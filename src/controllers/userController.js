@@ -2,6 +2,7 @@ import asycHandler from '../middlewares/asyncHandler.js';
 import OTPModel from '../models/otpModel.js';
 import UserModel from '../models/userModel.js';
 import generateToken from '../utils/createToken.js';
+import { getOTPEmailTemplate } from '../utils/getOTPEmailTemplate.js';
 import { sendEmailUtility } from '../utils/sendEmailUtility.js';
 export const registration = async (req, res) => {
   try {
@@ -105,24 +106,74 @@ export const updateUserProfile = asycHandler(async (req, res) => {
 });
 
 
-export const recoverVerifyEmail = asycHandler(async (req, res) => {
-  const email = req.params.email; 
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  try {
-    // Step 01: Email Account Query
-    // const userExists = await UserModel.findOne({ email });
-    const userExist = await UserModel.aggregate([{ $match: { email: email } },{$count:"total"}]); 
-    if (userExist.length > 0) {
-      // Step 02: OTP Insert
-      await OTPModel.create({email: email, otp: otp});
-      // Step 03: Send Email with OTP
-      const sendEmail = await sendEmailUtility(email, `Your OTP is ${otp}`, 'Task Manager App PIN Verification');
-      res.status(200).json({status:'success', message: 'OTP sent to your email', data: sendEmail});
-    } else {
-      res.status(400).json({status:'fail', message: 'Email not found'});
-    }
+// export const recoverVerifyEmail = asycHandler(async (req, res) => {
+//   const email = req.params.email;
+//   const otp = Math.floor(100000 + Math.random() * 900000).toString();
+//   try {
+//     // Step 01: Email Account Query
+//     // const userExists = await UserModel.findOne({ email });
+//     const userExist = await UserModel.aggregate([{ $match: { email: email } },{$count:"total"}]);
+//     if (userExist.length > 0) {
+//       // Step 02: OTP Insert
+//       await OTPModel.create({email: email, otp: otp});
+//       // Step 03: Send Email with OTP
+//       const sendEmail = await sendEmailUtility(email, `Your OTP is ${otp}`, 'Task Manager App PIN Verification');
+//       res.status(200).json({status:'success', message: 'OTP sent to your email', data: sendEmail});
+//     } else {
+//       res.status(400).json({status:'fail', message: 'Email not found'});
+//     }
     
-  }catch (error) {
-    res.status(400).json({status:'fail', message: error.message});
+//   }catch (error) {
+//     res.status(400).json({status:'fail', message: error.message});
+//   }
+// })
+// ✅ UPDATED: Now with HTML email template
+export const recoverVerifyEmail = asycHandler(async (req, res) => {
+  const email = req.params.email;
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  try {
+    // Step 01: Check if email exists
+    const userExist = await UserModel.aggregate([
+      { $match: { email: email } },
+      { $count: 'total' },
+    ]);
+
+    if (userExist.length > 0) {
+      // Step 02: Get user name for personalization
+      const user = await UserModel.findOne({ email: email });
+      const userName = user.firstName || 'User';
+
+      // Step 03: Create OTP record
+      await OTPModel.create({ email: email, otp: otp });
+
+      // Step 04: Generate HTML email template
+      const emailHTML = getOTPEmailTemplate(otp, userName);
+      const emailText = `Hello ${userName}, Your OTP is ${otp}. This code will expire in 10 minutes.`;
+
+      // Step 05: Send Email with HTML template
+      const sendEmail = await sendEmailUtility(
+        email,
+        emailText,
+        'Task Manager App PIN Verification',
+        emailHTML
+      );
+
+      res.status(200).json({
+        status: 'success',
+        message: 'OTP sent to your email',
+        data: sendEmail,
+      });
+    } else {
+      res.status(400).json({
+        status: 'fail',
+        message: 'Email not found',
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail',
+      message: error.message,
+    });
   }
-})
+});
