@@ -17,7 +17,7 @@ export const sendEmailUtility = async (EmailTo, EmailText, EmailSubject) => {
   });
 
   let mailOptions = {
-    from: 'Task Manger Asif <info@teamrabbil.com>',
+    from: 'Task Manger Asif <chymdasif7@gmail.com>',
     to: EmailTo,
     subject: EmailSubject,
     text: EmailText,
