@@ -1,4 +1,5 @@
 import asycHandler from '../middlewares/asyncHandler.js';
+import OTPModel from '../models/otpModel.js';
 import UserModel from '../models/userModel.js';
 import generateToken from '../utils/createToken.js';
 import { sendEmailUtility } from '../utils/sendEmailUtility.js';
@@ -118,7 +119,7 @@ export const recoverVerifyEmail = asycHandler(async (req, res) => {
       const sendEmail = await sendEmailUtility(email, `Your OTP is ${otp}`, 'Task Manager App PIN Verification');
       res.status(200).json({status:'success', message: 'OTP sent to your email', data: sendEmail});
     } else {
-      res.status(404).json({status:'fail', message: 'Email not found'});
+      res.status(400).json({status:'fail', message: 'Email not found'});
     }
     
   }catch (error) {
