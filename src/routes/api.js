@@ -3,6 +3,7 @@ import {
   loginUser,
   profileDetails,
   recoverVerifyEmail,
+  RecoverVerifyOTP,
   registration,
   updateUserProfile,
 } from '../controllers/userController.js';
@@ -15,6 +16,7 @@ const router = express.Router();
 router.post('/register', registration);
 router.post('/login', loginUser);
 router.get('/recover-verify-email/:email', recoverVerifyEmail);
+router.get('/recover-verify-otp/:email/:otp', RecoverVerifyOTP);
 
 router.get('/profile-details', authenticate, profileDetails);
 router.put('/update', authenticate, updateUserProfile);

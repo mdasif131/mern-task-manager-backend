@@ -177,3 +177,23 @@ export const recoverVerifyEmail = asycHandler(async (req, res) => {
     });
   }
 });
+export const RecoverVerifyOTP = asycHandler(async (req, res) => { 
+  const email = req.params.email; 
+  const otpCode = req.params.otp;
+  let status = 0;
+  let statusUpdate = 1;
+  try {
+    const OTPCount = await OTPModel.aggregate([
+      {$match:{email: email, otp: otpCode, status: status}},
+      { $count: "total" }]) 
+    if (OTPCount.length > 0) {
+      const OTPUpdate = await OTPModel.updateOne(
+        { email: email, otp: otpCode, status: status },
+        { $set: { email: email, otp: otpCode, status: statusUpdate } }
+      );
+      res.status(200).json({status:'success', data: OTPUpdate});
+    }
+  }catch (error) {
+    res.status(400).json({status:'fail', message: "Invalid OTP Code"});
+  }
+})
