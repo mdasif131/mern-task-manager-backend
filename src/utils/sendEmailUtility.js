@@ -3,15 +3,16 @@ import nodemailer from 'nodemailer';
 export const sendEmailUtility = async (EmailTo, EmailText, EmailSubject) => {
   let transport = nodemailer.createTransport({
     // service: 'gmail',
-    host: 'mail.teamrabbil.com',
+    // host: 'mail.teamrabbil.com',
+    host: 'smtp.gmail.com',
     port: 587,
     secure: false,
     auth: {
-      user: 'info@teamrabbil.com',
-      pass: '~sR4[bhaC[Qs',
-      // user: 'chymdasif7@gmail.com',
-      // pass: 'yhhcyrxamneojkpj',
-      tls: { rejectUnauthorized: false },
+      // user: 'info@teamrabbil.com',
+      // pass: '~sR4[bhaC[Qs',
+      user: 'chymdasif7@gmail.com',
+      pass: 'yhhcyrxamneojkpj',
+      // tls: { rejectUnauthorized: false },
     },
   });
 
