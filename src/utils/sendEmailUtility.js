@@ -21,7 +21,7 @@ export const sendEmailUtility = async (EmailTo, EmailText, EmailSubject) => {
     to: EmailTo,
     subject: EmailSubject,
     text: EmailText,
-    html: `<b>Node mailer powered by MD ASIF</b>`,
+    // html: `<b>Node mailer powered by MD ASIF</b>`,
   };
   return await transport.sendMail(mailOptions);
 }
