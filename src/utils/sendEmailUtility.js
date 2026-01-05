@@ -2,18 +2,20 @@ import nodemailer from 'nodemailer';
 
 export const sendEmailUtility = async (EmailTo, EmailText, EmailSubject) => {
   let transport = nodemailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',
+    // service: 'gmail',
+    host: 'mail.teamrabbil.com',
     port: 587,
     secure: false,
     auth: {
-      user: 'chymdasif7@gmail.com',
-      pass: 'yhhcyrxamneojkpj',
+      user: 'info@teamrabbil.com',
+      pass: '~sR4[bhaC[Qs',
+      // user: 'chymdasif7@gmail.com',
+      // pass: 'yhhcyrxamneojkpj',
     },
   });
 
   let mailOptions = {
-    from: 'Task Manger Asif <chymdasif7@gmail.com>',
+    from: 'Task Manger Asif <info@teamrabbil.com>',
     to: EmailTo,
     subject: EmailSubject,
     text: EmailText,
