@@ -192,8 +192,10 @@ export const RecoverVerifyOTP = asycHandler(async (req, res) => {
         { $set: { email: email, otp: otpCode, status: statusUpdate } }
       );
       res.status(200).json({status:'success', data: OTPUpdate});
+    } else {
+      res.status(404).json({status:'fail', message: "Invalid OTP Code"});
     }
   }catch (error) {
-    res.status(400).json({status:'fail', message: "Invalid OTP Code"});
+    res.status(404).json({status:'fail', message: "Invalid OTP Code"});
   }
 })
