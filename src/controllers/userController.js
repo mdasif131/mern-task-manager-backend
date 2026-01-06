@@ -198,4 +198,24 @@ export const RecoverVerifyOTP = asycHandler(async (req, res) => {
   }catch (error) {
     res.status(404).json({status:'fail', message: "Invalid OTP Code"});
   }
+}) 
+
+export const recoverResetPassword = asycHandler(async (req, res) => {
+  const { email, otp, password } = req.body;
+  let updatedStatus = 1; 
+  try {
+    const otpCount = await OTPModel.aggregate([
+      { $match: { email: email, otp: otp, status: updatedStatus } }, { $count: "total" }])
+    if (otpCount.length > 0) {
+       const passwordUpdate = await UserModel.updateOne(
+        { email: email },
+        { $set: { password: password } }
+      );
+      res.status(200).json({status:'success', data: passwordUpdate});
+    } else {
+      res.status(404).json({status:'fail', message: "Invalid OTP or Email"});
+     }
+  }catch (error) {
+    res.status(400).json({status:'fail', message: error.message});
+  }
 })

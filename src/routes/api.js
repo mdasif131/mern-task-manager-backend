@@ -2,6 +2,7 @@ import express from 'express';
 import {
   loginUser,
   profileDetails,
+  recoverResetPassword,
   recoverVerifyEmail,
   RecoverVerifyOTP,
   registration,
@@ -17,6 +18,7 @@ router.post('/register', registration);
 router.post('/login', loginUser);
 router.get('/recover-verify-email/:email', recoverVerifyEmail);
 router.get('/recover-verify-otp/:email/:otp', RecoverVerifyOTP);
+router.get('/recover-reset-password', recoverResetPassword);
 
 router.get('/profile-details', authenticate, profileDetails);
 router.put('/update', authenticate, updateUserProfile);
